@@ -10,7 +10,7 @@ const ONCALL_CALENDAR_ID = 'replace for your on-call rotation calendar id';
 const GROUP_EMAIL = 'replace for google group email';
 const OTHERS_EMAIL = ['replace for other email', 'replace for other email'] 
 
-const OOO_KEYWORDS = ['vacation', 'ooo', 'out of office', 'offline'];
+const OOO_KEYWORDS = ['vacation', 'ooo', 'out of office', 'offline', 'pto'];
 const MONTHS_IN_ADVANCE = 3;
 
 // Google Calendar Color Id for on call calendar events
@@ -196,6 +196,11 @@ function findOOOEvents(user, keyword, start, end, optSince) {
  * @return {boolean} True if the event should be imported.
  */
 function shouldImportEvent(user, keyword, event) {
+  /// If the even is type outOfOffice, always import it
+  if (event.eventType === "outOfOffice") {
+    return true;
+  }
+  
   // Filters out events where the keyword did not appear in the summary
   // (that is, the keyword appeared in a different field, and are thus
   // is not likely to be relevant).
